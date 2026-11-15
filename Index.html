@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#102b50">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent">
+
+  <title>Tatkal Companion</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.svg">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 20px 16px calc(25px + env(safe-area-inset-bottom));
+      padding-top: calc(20px + env(safe-area-inset-top));
+      background: #f2f5fa;
+      color: #172b45;
+      font-family: -apple-system, BlinkMacSystemFont,
+                   "Segoe UI", sans-serif;
+    }
+
+    .app {
+      max-width: 480px;
+      margin: auto;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      background: #173a68;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+    }
+
+    h1 { font-size: 22px; margin: 0; }
+    .muted { color: #718096; font-size: 13px; }
+
+    .card {
+      background: white;
+      padding: 18px;
+      border-radius: 17px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 15px rgba(20,40,70,.05);
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid #d8e0eb;
+      border-radius: 10px;
+      padding: 13px;
+      background: white;
+      font-size: 15px;
+      color: #172b45;
+      margin-bottom: 16px;
+    }
+
+    .timer {
+      background: #102b50;
+      color: white;
+      text-align: center;
+      border-radius: 15px;
+      padding: 22px 12px;
+    }
+
+    .timer small { color: #d0dcec; }
+
+    #countdown {
+      font-size: clamp(32px, 9vw, 42px);
+      font-weight: 750;
+      margin: 14px 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #timerStatus {
+      font-size: 14px;
+      color: #d7e5f8;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .check input {
+      width: 19px;
+      height: 19px;
+      margin: 0;
+      accent-color: #1769aa;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 11px;
+      background: #1769aa;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    button.secondary {
+      background: #e8eef7;
+      color: #173a68;
+    }
+
+    .notice {
+      background: #fff7e6;
+      color: #79551a;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: #8490a1;
+      padding: 12px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <header>
+    <div class="logo">🚆</div>
+    <div>
+      <h1>Tatkal Companion</h1>
+      <div class="muted">Your journey preparation assistant</div>
+    </div>
+  </header>
+
+  <section class="card">
+    <h3>Journey details</h3>
+
+    <label for="journeyDate">Journey date</label>
+    <input type="date" id="journeyDate">
+
+    <label for="travelClass">Travel class</label>
+    <select id="travelClass">
+      <option value="10">AC - 10:00 AM</option>
+      <option value="11">Non-AC - 11:00 AM</option>
+    </select>
+
+    <button class="secondary" id="calculate">
+      Calculate Tatkal opening
+    </button>
+  </section>
+
+  <section class="card">
+    <div class="timer">
+      <small>TATKAL BOOKING COUNTDOWN</small>
+      <div id="countdown">--:--:--</div>
+      <div id="timerStatus">
+        Select your journey date
+      </div>
+      <small id="openingDate"></small>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Booking readiness</h3>
+    <p class="muted">
+      Tick each item when you have checked it.
+    </p>
+
+    <label class="check">
+      <input type="checkbox" data-check="account">
+      IRCTC account ready
+    </label>
+
+    <label class="check">
+      <input type="checkbox" data-check="aadhaar">
+      Aadhaar authentication checked
+    </label>
+
+    <label class="check">
+      <input type="checkbox" data-check="train">
+      Train and route verified
+    </label>
+
+    <label class="check">
+      <input type="checkbox" data-check="date">
+      Journey date verified
+    </label>
+
+    <label class="check">
+      <input type="checkbox" data-check="payment">
+      Payment method ready
+    </label>
+
+    <label class="check">
+      <input type="checkbox" data-check="internet">
+      Internet connection checked
+    </label>
+
+    <button class="secondary" id="reset">
+      Reset checklist
+    </button>
+  </section>
+
+  <section class="card">
+    <h3>Official booking</h3>
+
+    <p class="muted">
+      Continue on the official IRCTC website to complete
+      your booking manually.
+    </p>
+
+    <button id="openIRCTC">
+      Open IRCTC Website ↗
+    </button>
+
+    <div class="notice" style="margin-top:15px">
+      CAPTCHA, OTP, passenger entry, reservation submission
+      and payment must be completed by you on IRCTC.
+      This app does not automate or bypass these controls.
+    </div>
+  </section>
+
+  <footer>
+    Tatkal Companion · Independent preparation tool
+  </footer>
+
+</div>
+
+<script>
+  const dateInput = document.getElementById("journeyDate");
+  const classInput = document.getElementById("travelClass");
+  const countdown = document.getElementById("countdown");
+  const status = document.getElementById("timerStatus");
+  const openingDate = document.getElementById("openingDate");
+
+  let targetTime = null;
+
+  function calculateOpening() {
+    if (!dateInput.value) {
+      targetTime = null;
+      countdown.textContent = "--:--:--";
+      status.textContent = "Select your journey date";
+      openingDate.textContent = "";
+      return;
+    }
+
+    const [year, month, day] =
+      dateInput.value.split("-").map(Number);
+
+    const journey = new Date(year, month - 1, day);
+
+    // Tatkal opens one calendar day before the
+    // train's originating-station departure date.
+    journey.setDate(journey.getDate() - 1);
+
+    const hour = Number(classInput.value);
+
+    targetTime = new Date(
+      journey.getFullYear(),
+      journey.getMonth(),
+      journey.getDate(),
+      hour, 0, 0, 0
+    );
+
+    openingDate.textContent =
+      "Opening: " + targetTime.toLocaleString();
+
+    updateCountdown();
+  }
+
+  function updateCountdown() {
+    if (!targetTime) return;
+
+    const difference = targetTime.getTime() - Date.now();
+
+    if (difference <= 0) {
+      countdown.textContent = "00:00:00";
+      status.textContent = "Scheduled opening time reached";
+      return;
+    }
+
+    const hours = Math.floor(difference / 3600000);
+    const minutes = Math.floor((difference % 3600000) / 60000);
+    const seconds = Math.floor((difference % 60000) / 1000);
+
+    countdown.textContent =
+      [hours, minutes, seconds]
+      .map(n => String(n).padStart(2, "0"))
+      .join(":");
+
+    status.textContent = "Time remaining until scheduled opening";
+  }
+
+  document.getElementById("calculate")
+    .addEventListener("click", calculateOpening);
+
+  dateInput.addEventListener("change", calculateOpening);
+  classInput.addEventListener("change", calculateOpening);
+
+  setInterval(updateCountdown, 1000);
+
+  // Save checklist status locally on this device.
+  document.querySelectorAll("[data-check]").forEach(item => {
+    const key = "tatkal-" + item.dataset.check;
+
+    item.checked = localStorage.getItem(key) === "true";
+
+    item.addEventListener("change", () => {
+      localStorage.setItem(key, item.checked);
+    });
+  });
+
+  document.getElementById("reset").addEventListener("click", () => {
+    document.querySelectorAll("[data-check]").forEach(item => {
+      item.checked = false;
+      localStorage.removeItem("tatkal-" + item.dataset.check);
+    });
+  });
+
+  document.getElementById("openIRCTC")
+    .addEventListener("click", () => {
+      window.location.href =
+        "https://www.irctc.co.in/nget/train-search";
+    });
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js")
+        .catch(error => console.error("SW registration failed", error));
+    });
+  }
+</script>
+</body>
+</html>
