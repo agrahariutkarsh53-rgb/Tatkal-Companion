@@ -1,0 +1,19 @@
+
+{
+  "name": "IRCTC Tatkal Companion",
+  "short_name": "Tatkal",
+  "description": "Tatkal journey preparation and countdown",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2f5fa",
+  "theme_color": "#102b50",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
